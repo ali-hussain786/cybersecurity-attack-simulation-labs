@@ -1,0 +1,15 @@
+{
+  "name": "cybersecurity-attack-simulation-labs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cybersecurity Attack Simulation Labs platform with a React SOC dashboard and Docker-based security simulations.",
+  "author": "Ali Hussain",
+  "license": "MIT",
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+    "dev:backend": "npm start --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "build:frontend": "npm run build --prefix frontend",
+    "start:backend": "npm start --prefix backend"
+  }
+}

@@ -1,0 +1,16 @@
+node_modules/
+.git/
+.gitignore
+.env
+.env.*
+*.log
+dist/
+build/
+.vite/
+coverage/
+__pycache__/
+*.py[cod]
+*.locked
+*.trigger
+.DS_Store
+Thumbs.db

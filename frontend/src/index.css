@@ -1,0 +1,50 @@
+/* =========================================
+   GLOBAL STYLES
+========================================= */
+
+html {
+  background: #070a0d;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #070a0d;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* =========================================
+   GLOBAL SCROLLBAR
+========================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070a0d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #26313a;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a4752;
+}
+
+/* =========================================
+   TEXT SELECTION
+========================================= */
+
+::selection {
+  background: rgba(85, 230, 138, 0.2);
+  color: #ffffff;
+}

@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  Activity,
   AlertTriangle,
   CheckCircle2,
   ChevronDown,
@@ -35,6 +34,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [action, setAction] = useState(null);
   const [error, setError] = useState("");
+  const [dockerConnected, setDockerConnected] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const [expandedFolders, setExpandedFolders] = useState({});
 
@@ -48,8 +49,11 @@ function App() {
 
       const data = await response.json();
       setContainers(data.containers || []);
+      setDockerConnected(true);
     } catch (err) {
-      setError(err.message);
+      setContainers([]);
+      setDockerConnected(false);
+      setError("Docker/backend connection unavailable");
     }
   };
 
@@ -86,11 +90,22 @@ function App() {
   };
 
   const refreshDashboard = async () => {
-    await Promise.all([
-      fetchStatus(),
-      fetchLogs(),
-      fetchFiles(),
-    ]);
+    setRefreshing(true);
+    setError("");
+
+    try {
+      await Promise.all([
+        fetchStatus(),
+        fetchLogs(),
+        fetchFiles(),
+      ]);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  const reloadPage = () => {
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -246,16 +261,34 @@ function App() {
         </div>
 
         <div className="topbar-right">
-          <div className="connection-status">
+          <div
+            className={`connection-status ${
+              dockerConnected ? "connected" : "disconnected"
+            }`}
+          >
             <Wifi size={16} />
-            <span>DOCKER CONNECTED</span>
-            <span className="status-dot online" />
+            <span>
+              {dockerConnected === null
+                ? "CHECKING DOCKER..."
+                : dockerConnected
+                  ? "DOCKER ENGINE CONNECTED"
+                  : "DOCKER ENGINE DISCONNECTED"}
+            </span>
+            <span
+              className={`status-dot ${
+                dockerConnected ? "online" : "offline"
+              }`}
+            />
           </div>
 
           <button
-            className="refresh-button"
-            onClick={refreshDashboard}
+            className={`refresh-button ${
+              refreshing ? "refreshing" : ""
+            }`}
+            onClick={reloadPage}
+            disabled={refreshing}
             title="Refresh dashboard"
+            aria-label="Refresh dashboard"
           >
             <RefreshCw size={17} />
           </button>

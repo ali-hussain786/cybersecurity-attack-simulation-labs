@@ -30,4 +30,4 @@ services:
 
 networks:
   cyberlab:
-    driver: bridge
+    external: true

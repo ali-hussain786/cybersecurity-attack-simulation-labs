@@ -10,7 +10,7 @@ services:
       NODE_ENV: development
     restart: unless-stopped
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/alihussain/.docker/desktop/docker.sock:/var/run/docker.sock
     networks:
       - cyberlab
 

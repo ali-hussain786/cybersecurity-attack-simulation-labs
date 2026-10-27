@@ -1,50 +1,39 @@
-/* =========================================
-   GLOBAL STYLES
-========================================= */
-
-html {
-  background: #070a0d;
-  color-scheme: dark;
+html, body, #root {
+  margin: 0;
+  min-height: 100%;
+  width: 100%;
 }
 
 body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  background: #070a0d;
+  background: #070b12;
+  font-family: Inter, system-ui, sans-serif;
+  color: #e7eef7;
+  -webkit-font-smoothing: antialiased;
 }
 
-#root {
-  min-height: 100vh;
+button, input, textarea, select {
+  font-family: inherit;
 }
 
-/* =========================================
-   GLOBAL SCROLLBAR
-========================================= */
+::selection {
+  background: rgba(67,199,255,.2);
+  color: white;
+}
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #070a0d;
+  background: #080e15;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #26313a;
-  border-radius: 10px;
+  background: #253747;
+  border-radius: 20px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a4752;
-}
-
-/* =========================================
-   TEXT SELECTION
-========================================= */
-
-::selection {
-  background: rgba(85, 230, 138, 0.2);
-  color: #ffffff;
+  background: #34536a;
 }

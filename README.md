@@ -1,182 +1,118 @@
-# 🛡️ Cybersecurity Attack Simulation Labs
+# Cybersecurity Attack Simulation Labs
 
-> A modular platform for controlled cybersecurity simulation, monitoring, analysis, and recovery.
+A modular platform for controlled cybersecurity simulation, monitoring, analysis, and recovery.
 
-<p align="center">
+## Overview
 
-![React](https://img.shields.io/badge/Frontend-React-61DAFB?logo=react&logoColor=black)
-![Vite](https://img.shields.io/badge/Build-Vite-646CFF?logo=vite&logoColor=white)
-![Node.js](https://img.shields.io/badge/Backend-Node.js-339933?logo=node.js&logoColor=white)
-![Docker](https://img.shields.io/badge/Lab-Docker-2496ED?logo=docker&logoColor=white)
-![Linux](https://img.shields.io/badge/OS-Fedora-51A2DA?logo=fedora&logoColor=white)
+CyberLab is an educational security lab that combines a React/Vite SOC dashboard, a Node.js/Express API, and an isolated Docker lab. The current lab focuses on a controlled ransomware simulation and its defensive observation and recovery workflow.
 
-</p>
+### Current capabilities
 
----
+- SOC dashboard and lab status
+- Network discovery of configured lab containers
+- Manual victim selection
+- Selected-port connectivity checks against the selected lab victim
+- Controlled ransomware simulation controls
+- Victim file-state inspection
+- Attacker and victim logs
+- Recovery workflow
+- Victim desktop access
+- Reports and evidence views
 
-## 🎯 Overview
+**Browser Activity Lab, Browser Activity Monitor, Browser Event History, and the dedicated browser telemetry test page have been removed from the application.** Victim Desktop remains available as a separate lab-access screen.
 
-**Cybersecurity Attack Simulation Labs** is a controlled security laboratory platform for learning, research, and defensive security testing.
-
-It combines a **React SOC dashboard**, **Node.js backend**, and **isolated Docker laboratories** to provide a single interface for:
-
-- 📊 Monitoring laboratory status
-- ⚡ Running controlled simulations
-- 📜 Viewing security telemetry
-- 🔄 Testing recovery workflows
-
-### Current Laboratory
-
-🦠 **Ransomware Simulation Lab**
-
-The architecture is designed so additional cybersecurity laboratories can be added later.
-
----
-
-## 🏗️ System Architecture
+## Architecture
 
 ```text
-┌───────────────────────────────────────────────┐
-│              🖥️ SOC DASHBOARD                │
-│                                               │
-│  📊 Status   ⚡ Attack   🔄 Recovery   📜 Logs │
-│                                               │
-│              React + Vite                     │
-└───────────────────────┬───────────────────────┘
-                        │
-                     REST API
-                        │
-                        ▼
-┌───────────────────────────────────────────────┐
-│               ⚙️ BACKEND API                  │
-│                                               │
-│             Node.js + Express                 │
-│                                               │
-│  Health │ Status │ Attack │ Recovery │ Logs  │
-└───────────────────────┬───────────────────────┘
-                        │
-                    Docker CLI
-                        │
-                        ▼
-┌───────────────────────────────────────────────┐
-│              🐳 ISOLATED LAB                  │
-│                                               │
-│     ┌──────────────┐     ┌──────────────┐     │
-│     │ ⚠️ ATTACKER  │ ──▶ │ 🖥️ VICTIM    │     │
-│     │  Container   │     │  Container   │     │
-│     └──────────────┘     └──────────────┘     │
-└───────────────────────────────────────────────┘
+React + Vite SOC Dashboard
+          |
+          | HTTP / JSON
+          v
+Node.js + Express API
+          |
+          | Docker CLI
+          v
+Isolated Docker lab
+   |             |
+Attacker       Victim
 ```
 
----
-
-## 🔄 Simulation Flow
-
-```text
-┌──────────────┐
-│ 👤 SOC User  │
-└──────┬───────┘
-       │
-       ▼
-┌──────────────────┐
-│ Start Simulation │
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│ ⚠️ Attacker Lab  │
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│ 🖥️ Victim Lab    │
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│ 📜 Logs & Events │
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│ 🔍 Security View │
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│ 🔄 Recovery      │
-└──────────────────┘
-```
-
----
-
-## 🧩 Technology Stack
+## Technology stack
 
 | Layer | Technology |
 |---|---|
-| 🎨 Frontend | React + Vite |
-| 🧩 UI Icons | Lucide React |
-| ⚙️ Backend | Node.js + Express |
-| 🐳 Laboratory | Docker |
-| 🐍 Simulation | Python |
-| 🐧 Operating System | Linux / Fedora |
-| 🔧 Development | Git + GitHub |
+| Frontend | React + Vite |
+| UI icons | Lucide React |
+| Backend | Node.js + Express |
+| HTTP communication | Fetch API / JSON |
+| Lab environment | Docker |
+| Simulation components | Python |
+| Development platform | Linux / Fedora, Git and GitHub |
 
----
+Use the package manifests in `frontend/package.json` and `backend/package.json` as the source of truth for installed dependency versions.
 
-## 📁 Project Structure
+## Project structure
 
 ```text
 cybersecurity-attack-simulation-labs/
-│
 ├── README.md
-├── .gitignore
-│
+├── docker-compose.yml
 ├── frontend/
 │   ├── package.json
-│   ├── package-lock.json
 │   └── src/
 │       ├── App.jsx
 │       ├── App.css
 │       ├── index.css
-│       └── main.jsx
-│
-├── backend/
-│   ├── package.json
-│   ├── package-lock.json
-│   └── server.js
-│
-└── labs/
-    └── ransomware/
-        ├── attacker/
-        └── victim/
+│       └── services/
+│           └── api.js
+└── backend/
+    ├── package.json
+    └── server.js
 ```
 
----
-
-## 🔌 API
+## API overview
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| `GET` | `/api/health` | Check backend health |
-| `GET` | `/api/status` | Check Docker containers |
-| `POST` | `/api/attack` | Start controlled simulation |
-| `POST` | `/api/recover` | Start recovery workflow |
-| `GET` | `/api/logs/victim` | Read victim logs |
-| `GET` | `/api/logs/attacker` | Read attacker logs |
+| `GET` | `/api/health` | Check backend and Docker CLI availability |
+| `GET` | `/api/status` | Retrieve known lab container status |
+| `GET` | `/api/network/discovery` | Discover configured lab containers |
+| `GET` | `/api/victim/selected` | Get the selected victim |
+| `POST` | `/api/victim/select` | Select the controlled victim container |
+| `POST` | `/api/victim/clear` | Clear the current victim selection |
+| `POST` | `/api/scan` | Check configured TCP ports on the selected victim |
+| `GET` | `/api/scan` | Retrieve the most recent scan result |
+| `GET` | `/api/files` | Read current files under the victim's `/lab-target` directory |
+| `POST` | `/api/attack` | Start the controlled attacker simulation |
+| `POST` | `/api/recover` | Trigger the lab recovery workflow |
+| `GET` | `/api/logs/victim` | Retrieve victim container logs for the current run |
+| `GET` | `/api/logs/attacker` | Retrieve attacker container logs for the current run |
 
----
+## Quick start
 
-## 🚀 Quick Start
+### Option A: Docker Compose
 
-### 1. Clone the Repository
+From the project root, ensure the external `cyberlab` Docker network already exists, then run:
 
 ```bash
-git clone git@github.com:ali-hussain786/cybersecurity-attack-simulation-labs.git
-cd cybersecurity-attack-simulation-labs
+docker compose up -d
+docker compose ps
 ```
 
-### 2. Start the Frontend
+Frontend: <http://localhost:5173>
+Backend health: <http://localhost:5000/api/health>
+
+Stop the Compose services with:
+
+```bash
+docker compose down
+```
+
+This stops the Compose services; it does not intentionally remove the external `cyberlab` network or unrelated lab containers.
+
+### Option B: Run services locally
+
+Frontend:
 
 ```bash
 cd frontend
@@ -184,123 +120,28 @@ npm install
 npm run dev
 ```
 
-Open:
-
-```text
-http://localhost:5173
-```
-
-### 3. Start the Backend
-
-Open another terminal:
+Backend in another terminal:
 
 ```bash
 cd backend
 npm install
-node server.js
+npm start
 ```
 
-Backend:
-
-```text
-http://localhost:5000
-```
-
-Test:
+Check the backend:
 
 ```bash
-curl http://localhost:5000/api/health
+curl -i http://localhost:5000/api/health
 ```
 
----
+Use the project's configured environment and Docker context. Do not expose the Docker-control backend or Docker socket to the public internet.
 
-## 🐳 Laboratory Environment
+## Lab scope and safety
 
-The laboratory uses Docker to keep simulation components isolated from the host's production environment.
+This project is for education, defensive security research, and authorized testing in an isolated environment. Run simulations only against intentionally created lab targets that you own or are authorized to test. Preserve evidence and verify file state before claiming an attack or recovery succeeded.
 
-```text
-                 🐧 LOCAL HOST
-                       │
-                       ▼
-                ┌─────────────┐
-                │ 🐳 Docker   │
-                └──────┬──────┘
-                       │
-              ┌────────┴────────┐
-              ▼                 ▼
-       ┌─────────────┐   ┌─────────────┐
-       │ ⚠️ Attacker │──▶│ 🖥️ Victim   │
-       │  Container  │   │  Container  │
-       └─────────────┘   └─────────────┘
-```
+The backend has Docker-control capabilities. Keep it restricted to the local lab environment and protect access to the Docker socket.
 
----
+## Responsible use
 
-## 🔐 Security
-
-This project is intended for:
-
-- 🎓 Education
-- 🔬 Security research
-- 🧪 Controlled laboratory testing
-- 🛡️ Defensive security analysis
-
-Only run simulations against systems you own or are explicitly authorized to test.
-
-The Docker-control backend should remain within the controlled laboratory environment and should **not be exposed directly to the public internet**.
-
----
-
-## 🔮 Future Laboratories
-
-The platform is designed to support additional security scenarios:
-
-```text
-🦠 Ransomware Simulation
-        │
-        ├── 🌐 Web Security
-        ├── 🎣 Phishing Awareness
-        ├── 🔑 Authentication Security
-        ├── 📡 Network Security
-        ├── 🔍 Malware Analysis
-        ├── 🚨 Incident Response
-        └── 🛡️ Defensive Monitoring
-```
-
----
-
-## 📈 Development Roadmap
-
-```text
-Phase 1 ──► 🧪 Laboratory
-             Docker + Attacker + Victim
-
-Phase 2 ──► 🖥️ SOC Dashboard
-             React + Express + Logs
-
-Phase 3 ──► 🔍 Security Monitoring
-             Events + Detection + Analysis
-
-Phase 4 ──► 🧩 Multi-Lab Platform
-             Multiple cybersecurity scenarios
-```
-
----
-
-## ⚖️ Responsible Use
-
-This platform is developed for educational and defensive-security purposes.
-
-Use it only in authorized and isolated environments.
-
-**Never use the simulation components against systems, networks, or data without explicit permission.**
-
----
-
-## 👨‍💻 Author
-
-**Ali Hussain**
-
-Cybersecurity Attack Simulation Labs
-
-> **Controlled Simulation • Security Research • Defensive Analysis**
+Never use simulation components against systems, networks, or data without explicit authorization.

@@ -1,30 +1,38 @@
 # CyberLab Backend
 
-Backend API for the Cybersecurity Attack Simulation Labs platform.
+Node.js and Express REST API for the Cybersecurity Attack Simulation Labs platform.
 
-## Purpose
+## Responsibilities
 
-This service provides a local REST API for the SOC dashboard and communicates with the Docker-based cybersecurity simulation lab.
-
-It is responsible for:
-
-- Monitoring Docker container status
-- Starting the controlled attacker simulation
-- Triggering file recovery
-- Reading victim and attacker logs
-- Reporting runtime file statistics from the victim container
+- Check backend and Docker CLI health
+- Report configured lab container status
+- Discover containers on the lab
+- Select or clear the controlled victim
+- Probe selected TCP ports on the selected victim
+- Report file state under `/lab-target`
+- Start the controlled attacker simulation
+- Trigger recovery
+- Retrieve attacker and victim logs
 
 ## API
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| GET | `/api/health` | Check backend health |
-| GET | `/api/status` | Get Docker container status |
-| GET | `/api/files` | Get target directory, file statistics, folders, and file paths |
-| POST | `/api/attack` | Start the attacker simulation |
+| GET | `/api/health` | Check backend health and Docker CLI availability |
+| GET | `/api/status` | Get configured container status |
+| GET | `/api/network/discovery` | Discover lab containers |
+| GET | `/api/victim/selected` | Get current victim selection |
+| POST | `/api/victim/select` | Select the controlled victim |
+| POST | `/api/victim/clear` | Clear the selected victim |
+| POST | `/api/scan` | Check configured TCP ports on the selected victim |
+| GET | `/api/scan` | Get the latest scan result |
+| GET | `/api/files` | Read files and file-state statistics under `/lab-target` |
+| POST | `/api/attack` | Start the controlled attacker simulation |
 | POST | `/api/recover` | Trigger recovery |
-| GET | `/api/logs/victim` | Get victim container logs |
-| GET | `/api/logs/attacker` | Get attacker container logs |
+| GET | `/api/logs/victim` | Retrieve victim logs |
+| GET | `/api/logs/attacker` | Retrieve attacker logs |
+
+Browser activity telemetry endpoints have been removed.
 
 ## Run
 
@@ -40,79 +48,14 @@ Start the backend:
 npm start
 ```
 
-The API will be available at:
-
-```text
-http://localhost:5000
-```
+The API listens on port `5000` by default.
 
 Health check:
 
-```text
-http://localhost:5000/api/health
+```bash
+curl -i http://localhost:5000/api/health
 ```
 
-## File Monitoring
+## Security scope
 
-The `/api/files` endpoint reads the current contents of the victim's lab target directory.
-
-The default target directory used by the simulation is:
-
-```text
-/lab-target
-```
-
-The endpoint reports:
-
-- Target directory
-- Total file count
-- Normal file count
-- Locked file count
-- Folder count
-- Folder names
-- File count per folder
-- Runtime file paths
-
-Example response structure:
-
-```json
-{
-  "success": true,
-  "targetDirectory": "/lab-target",
-  "statistics": {
-    "totalFiles": 6,
-    "normalFiles": 6,
-    "lockedFiles": 0,
-    "folderCount": 3
-  },
-  "folders": [
-    {
-      "name": "data",
-      "count": 2
-    },
-    {
-      "name": "documents",
-      "count": 3
-    },
-    {
-      "name": "images",
-      "count": 1
-    }
-  ],
-  "files": [
-    "data/database.json",
-    "data/students.csv",
-    "documents/project.txt"
-  ]
-}
-```
-
-The SOC dashboard uses this information to display the current state of the simulated victim filesystem.
-
-## Security Scope
-
-This backend is designed for a controlled cybersecurity simulation environment.
-
-Attack and recovery operations should only be performed against the isolated Docker lab and intentionally created test files.
-
-Do not connect the simulation to systems or files that you do not own or have explicit authorization to test.
+Use the backend only in the authorized, isolated lab. It can control Docker containers through the Docker CLI, so do not expose it or its Docker socket to the public internet.
